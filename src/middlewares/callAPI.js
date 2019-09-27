@@ -6,17 +6,11 @@ const callAPI = store => next => action => {
   const state = store.getState();
   if (action.CALL_API) {
     const { model, enpoint } = action.CALL_API;
-    if (model) {
+    if (model && enpoint) {
       const [START, SUCCESS, FAIL] = buildActionTypes(model);
       next({
         type: START
       });
-      if (!enpoint) {
-        next({
-          type: FAIL,
-          error: "Not found API"
-        });
-      }
       const cacheData = state[model.toLowerCase()].cache[enpoint];
       if (cacheData && cacheData.expiredAt > moment()) {
         next({
